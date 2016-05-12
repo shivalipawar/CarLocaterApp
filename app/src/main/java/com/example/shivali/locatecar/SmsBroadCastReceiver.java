@@ -10,6 +10,7 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
     public static final String SMS_BUNDLE = "pdus";
     double latitude;
     double longitude;
+    String carOwner;
 
     public void onReceive(Context context, Intent intent) {
         Bundle intentExtras = intent.getExtras();
@@ -18,7 +19,6 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
             String smsMessageStr = "";
             for (int i = 0; i < sms.length; ++i) {
                 SmsMessage smsMessage = SmsMessage.createFromPdu((byte[]) sms[i]);
-
                 String smsBody = smsMessage.getMessageBody().toString();
                 //String address = smsMessage.getOriginatingAddress();
 
@@ -30,18 +30,15 @@ public class SmsBroadCastReceiver extends BroadcastReceiver {
 
                 MapsActivity mapsActivity = MapsActivity.getInstance();
                 extractData(smsMessageStr);
-                Toast.makeText(context,"latitude : "+latitude + " longitude : "+longitude,Toast.LENGTH_SHORT).show();
-                mapsActivity.updateVehicleLocation(latitude,longitude);
-
+                mapsActivity.updateVehicleLocation(latitude,longitude,carOwner);
         }
     }
 
     private void extractData(String smsMessageStr) {
     String data[] = smsMessageStr.split("\n");
-    latitude = Double.parseDouble(data[0].split(":")[1]);
-    longitude = Double.parseDouble(data[1].split(":")[1]);
+    carOwner=data[0];
+    latitude = Double.parseDouble(data[1].split(":")[1]);
+    longitude = Double.parseDouble(data[2].split(":")[1]);
     }
-
-
 
 }

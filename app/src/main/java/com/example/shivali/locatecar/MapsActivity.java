@@ -47,14 +47,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
          final Marker marker = mMap.addMarker(markerOptions);
         }
 
-    public void updateVehicleLocation(double latitude, double longitude) {
+    public void updateVehicleLocation(double latitude, double longitude, String carOwner) {
         Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
         List<Address> addresses;
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        String cityName="Zoom in to see location";
+        String cityName=carOwner+" 's vechicle Zoom in to see location";
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            cityName = addresses.get(0).getAddressLine(0);
+            cityName = carOwner + "'s Vechicle "+ addresses.get(0).getAddressLine(0);
 
         } catch (IOException e) {
             e.printStackTrace();
